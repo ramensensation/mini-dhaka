@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#2d4fe4" />
+  <meta name="theme-color" content="#2949d6" />
   <title>Mini Dhaka — Explore Dhaka in miniature</title>
-  <meta name="description" content="Mini Dhaka is an interactive 3D city experience inspired by Dhaka, Bangladesh." />
+  <meta name="description" content="Mini Dhaka is an interactive 3D city experience based on real Dhaka landmark positions and map data." />
   <link rel="stylesheet" href="./style.css" />
   <script type="importmap">
   {
@@ -19,7 +19,7 @@
 <body>
   <div id="loader" class="loader">
     <div class="loader-logo">md</div>
-    <div>Building Mini Dhaka…</div>
+    <div>Loading real Dhaka map…</div>
   </div>
 
   <main class="app">
@@ -36,7 +36,7 @@
         <button class="round-btn" id="soundBtn" type="button" title="Sound">♪</button>
         <button class="round-btn" id="mapBtn" type="button" title="Map">⌖</button>
         <button class="top-pill" id="cityBtn" type="button">City view</button>
-        <button class="top-pill" id="storyBtn" type="button">Story mode</button>
+        <button class="top-pill" id="storyBtn" type="button">Next landmark</button>
         <button class="round-btn" id="helpBtn" type="button" title="Help">?</button>
       </div>
     </header>
@@ -44,26 +44,14 @@
     <section class="stage">
       <canvas id="cityCanvas" aria-label="3D Mini Dhaka city"></canvas>
 
-      <div class="weather">
-        <div class="sun"></div>
-        <div class="cloud cloud-a"></div>
-        <div class="cloud cloud-b"></div>
-      </div>
-
       <aside class="right-ui">
         <section class="map-card" id="mapCard">
-          <div class="card-label">YOU ARE HERE</div>
-          <div class="mini-map">
-            <span class="road road-h"></span>
-            <span class="road road-v"></span>
-            <span class="road road-d"></span>
-            <span class="map-block b1"></span>
-            <span class="map-block b2"></span>
-            <span class="map-block b3"></span>
-            <span class="map-block b4"></span>
-            <span class="you-dot"></span>
+          <div class="map-heading">
+            <div class="card-label">REAL DHAKA MAP</div>
+            <span id="mapStatus">LOADING</span>
           </div>
-          <div class="map-footer"><span>LIVE</span><b id="distanceReadout">Dhaka</b></div>
+          <canvas id="miniMapCanvas" class="mini-map-canvas" width="300" height="190"></canvas>
+          <div class="map-footer"><span>LIVE POSITION</span><b id="distanceReadout">Map accurate</b></div>
         </section>
 
         <div class="view-controls">
@@ -80,8 +68,8 @@
             </div>
             <button id="minStory" type="button">—</button>
           </div>
-          <h2 id="storyTitle">A city of stories</h2>
-          <p id="storyText">Click a landmark in the city to discover a short story about Dhaka.</p>
+          <h2 id="storyTitle">Real-position Mini Dhaka</h2>
+          <p id="storyText">The five main landmarks are placed from real geographic coordinates. Click one to explore it.</p>
           <div class="story-divider"></div>
           <button class="story-link" id="nextStory" type="button">
             <span>↗</span>
@@ -98,18 +86,22 @@
       </div>
 
       <div class="movement-hint">
-        <b>DRAG</b> to look around
+        <b>DRAG</b> look
         <span></span>
-        <b>SCROLL</b> to zoom
+        <b>SCROLL</b> zoom
         <span></span>
-        <b>CLICK</b> a landmark
+        <b>CLICK</b> landmark
+        <span></span>
+        <b>WALK</b> street view
       </div>
 
       <div class="city-title">
-        <span>DHAKA, BANGLADESH</span>
+        <span>REAL-WORLD LAYOUT</span>
         <strong>Mini Dhaka</strong>
-        <small>A living miniature of the capital</small>
+        <small>Landmarks and primary roads follow real Dhaka geography</small>
       </div>
+
+      <div class="map-credit">Map data © OpenStreetMap contributors · 3D interpretation by Mini Dhaka</div>
     </section>
   </main>
 
