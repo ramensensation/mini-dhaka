@@ -3,11 +3,10 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#2439d8" />
-  <title>Mini Dhaka — A little city, a million stories</title>
-  <meta name="description" content="An interactive miniature 3D exploration of Dhaka, Bangladesh." />
+  <meta name="theme-color" content="#2847df" />
+  <title>Mini Dhaka — Explore the city in miniature</title>
+  <meta name="description" content="Mini Dhaka is an interactive 3D web experience celebrating the stories, landmarks and movement of Dhaka, Bangladesh." />
   <link rel="stylesheet" href="./style.css" />
-
   <script type="importmap">
   {
     "imports": {
@@ -18,18 +17,24 @@
   </script>
 </head>
 <body>
+  <div class="loading-screen" id="loadingScreen">
+    <div class="loader-mark">md</div>
+    <div class="loader-copy">Building a tiny Dhaka…</div>
+  </div>
+
   <main class="app-shell">
     <header class="topbar">
       <a class="brand" href="#" aria-label="Mini Dhaka home">
         <span class="brand-mark">md</span>
         <span class="brand-copy">
           <strong>mini dhaka</strong>
-          <small>বাংলাদেশ</small>
+          <small>ঢাকা · বাংলাদেশ</small>
         </span>
       </a>
 
       <nav class="top-actions" aria-label="Site controls">
-        <button class="icon-btn" id="soundBtn" type="button" title="Sound prototype">♪</button>
+        <button class="icon-btn" id="soundBtn" type="button" title="Ambient sound">♪</button>
+        <button class="pill-btn" id="tourBtn" type="button">Guided tour</button>
         <button class="pill-btn" id="resetBtn" type="button">Reset view</button>
         <button class="pill-btn" id="aboutBtn" type="button">About</button>
       </nav>
@@ -46,30 +51,56 @@
 
         <p class="tagline">
           A little city, a million stories.<br />
-          History, movement, food and everyday Dhaka — in miniature.
+          Rotate, explore and discover Dhaka in miniature.
         </p>
 
-        <button class="cta" id="exploreBtn" type="button">
-          চলো, ঢাকা ঘুরি <span>↗</span>
-        </button>
+        <div class="hero-actions">
+          <button class="cta" id="exploreBtn" type="button">
+            চলো, ঢাকা ঘুরি <span>↗</span>
+          </button>
+          <button class="ghost-btn" id="randomBtn" type="button">Surprise me</button>
+        </div>
 
-        <div class="hint">
-          Drag to rotate · Scroll to zoom · Click a landmark
+        <div class="mini-stats">
+          <span><b>8</b> landmarks</span>
+          <span><b>3D</b> interactive</span>
+          <span><b>RM0</b> prototype</span>
         </div>
       </div>
 
-      <div class="scene-wrap">
+      <div class="scene-wrap" id="sceneWrap">
         <canvas id="cityCanvas" aria-label="Interactive 3D Mini Dhaka"></canvas>
+        <div class="hotspot-layer" id="hotspotLayer" aria-hidden="false"></div>
+
+        <div class="scene-topline">
+          <span class="live-dot"></span>
+          <span>MINI DHAKA · LIVE MODEL</span>
+        </div>
 
         <div class="landmark-card" id="landmarkCard" hidden>
           <button class="card-close" id="cardClose" type="button" aria-label="Close">×</button>
           <div class="card-kicker" id="cardArea">DHAKA</div>
           <h2 id="cardTitle">Landmark</h2>
           <p id="cardText"></p>
+          <div class="card-footer">
+            <span id="cardCount">01 / 08</span>
+            <button id="nextLandmark" type="button">Next place →</button>
+          </div>
         </div>
 
-        <div class="scene-badge">3D PROTOTYPE · V0.1</div>
+        <div class="scene-help">
+          <span>Drag</span> rotate
+          <i></i>
+          <span>Scroll</span> zoom
+          <i></i>
+          <span>Click</span> discover
+        </div>
       </div>
+    </section>
+
+    <section class="landmark-strip" aria-label="Quick landmark navigation">
+      <div class="strip-title">QUICK EXPLORE</div>
+      <div class="strip-scroll" id="stripScroll"></div>
     </section>
 
     <div class="about-panel" id="aboutPanel" hidden>
@@ -77,10 +108,15 @@
       <div class="card-kicker">ABOUT THE PROJECT</div>
       <h2>Mini Dhaka</h2>
       <p>
-        An original interactive web project that reimagines Dhaka as a playful
-        miniature city. This first build uses only browser-based code and free hosting.
+        An original interactive web project that reimagines Dhaka as a playful miniature city.
+        This prototype is built with plain web technology and Three.js, hosted free on Cloudflare Pages.
       </p>
+      <div class="about-tags">
+        <span>Three.js</span><span>GitHub</span><span>Cloudflare Pages</span><span>No terminal</span>
+      </div>
     </div>
+
+    <div class="toast" id="toast" hidden></div>
   </main>
 
   <script type="module" src="./app.js"></script>
