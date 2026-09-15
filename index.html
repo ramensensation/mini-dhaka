@@ -3,9 +3,9 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="theme-color" content="#2847df" />
-  <title>Mini Dhaka — Explore the city in miniature</title>
-  <meta name="description" content="Mini Dhaka is an interactive 3D web experience celebrating the stories, landmarks and movement of Dhaka, Bangladesh." />
+  <meta name="theme-color" content="#2d4fe4" />
+  <title>Mini Dhaka — Explore Dhaka in miniature</title>
+  <meta name="description" content="Mini Dhaka is an interactive 3D city experience inspired by Dhaka, Bangladesh." />
   <link rel="stylesheet" href="./style.css" />
   <script type="importmap">
   {
@@ -17,106 +17,100 @@
   </script>
 </head>
 <body>
-  <div class="loading-screen" id="loadingScreen">
-    <div class="loader-mark">md</div>
-    <div class="loader-copy">Building a tiny Dhaka…</div>
+  <div id="loader" class="loader">
+    <div class="loader-logo">md</div>
+    <div>Building Mini Dhaka…</div>
   </div>
 
-  <main class="app-shell">
+  <main class="app">
     <header class="topbar">
       <a class="brand" href="#" aria-label="Mini Dhaka home">
-        <span class="brand-mark">md</span>
-        <span class="brand-copy">
+        <span class="brand-logo">md</span>
+        <span>
           <strong>mini dhaka</strong>
           <small>ঢাকা · বাংলাদেশ</small>
         </span>
       </a>
 
-      <nav class="top-actions" aria-label="Site controls">
-        <button class="icon-btn" id="soundBtn" type="button" title="Ambient sound">♪</button>
-        <button class="pill-btn" id="tourBtn" type="button">Guided tour</button>
-        <button class="pill-btn" id="resetBtn" type="button">Reset view</button>
-        <button class="pill-btn" id="aboutBtn" type="button">About</button>
-      </nav>
+      <div class="top-actions">
+        <button class="round-btn" id="soundBtn" type="button" title="Sound">♪</button>
+        <button class="round-btn" id="mapBtn" type="button" title="Map">⌖</button>
+        <button class="top-pill" id="cityBtn" type="button">City view</button>
+        <button class="top-pill" id="storyBtn" type="button">Story mode</button>
+        <button class="round-btn" id="helpBtn" type="button" title="Help">?</button>
+      </div>
     </header>
 
-    <section class="hero">
-      <div class="hero-copy">
-        <div class="location-chip">
-          <span class="traffic-dots"><i></i><i></i><i></i></span>
-          DHAKA, BANGLADESH
-        </div>
+    <section class="stage">
+      <canvas id="cityCanvas" aria-label="3D Mini Dhaka city"></canvas>
 
-        <h1>Mini<br />Dhaka <span>BD</span></h1>
-
-        <p class="tagline">
-          A little city, a million stories.<br />
-          Rotate, explore and discover Dhaka in miniature.
-        </p>
-
-        <div class="hero-actions">
-          <button class="cta" id="exploreBtn" type="button">
-            চলো, ঢাকা ঘুরি <span>↗</span>
-          </button>
-          <button class="ghost-btn" id="randomBtn" type="button">Surprise me</button>
-        </div>
-
-        <div class="mini-stats">
-          <span><b>8</b> landmarks</span>
-          <span><b>3D</b> interactive</span>
-          <span><b>RM0</b> prototype</span>
-        </div>
+      <div class="weather">
+        <div class="sun"></div>
+        <div class="cloud cloud-a"></div>
+        <div class="cloud cloud-b"></div>
       </div>
 
-      <div class="scene-wrap" id="sceneWrap">
-        <canvas id="cityCanvas" aria-label="Interactive 3D Mini Dhaka"></canvas>
-        <div class="hotspot-layer" id="hotspotLayer" aria-hidden="false"></div>
-
-        <div class="scene-topline">
-          <span class="live-dot"></span>
-          <span>MINI DHAKA · LIVE MODEL</span>
-        </div>
-
-        <div class="landmark-card" id="landmarkCard" hidden>
-          <button class="card-close" id="cardClose" type="button" aria-label="Close">×</button>
-          <div class="card-kicker" id="cardArea">DHAKA</div>
-          <h2 id="cardTitle">Landmark</h2>
-          <p id="cardText"></p>
-          <div class="card-footer">
-            <span id="cardCount">01 / 08</span>
-            <button id="nextLandmark" type="button">Next place →</button>
+      <aside class="right-ui">
+        <section class="map-card" id="mapCard">
+          <div class="card-label">YOU ARE HERE</div>
+          <div class="mini-map">
+            <span class="road road-h"></span>
+            <span class="road road-v"></span>
+            <span class="road road-d"></span>
+            <span class="map-block b1"></span>
+            <span class="map-block b2"></span>
+            <span class="map-block b3"></span>
+            <span class="map-block b4"></span>
+            <span class="you-dot"></span>
           </div>
+          <div class="map-footer"><span>LIVE</span><b id="distanceReadout">Dhaka</b></div>
+        </section>
+
+        <div class="view-controls">
+          <button id="zoomOut" type="button">−</button>
+          <button id="zoomIn" type="button">+</button>
+          <button id="walkBtn" type="button">Walk</button>
         </div>
 
-        <div class="scene-help">
-          <span>Drag</span> rotate
-          <i></i>
-          <span>Scroll</span> zoom
-          <i></i>
-          <span>Click</span> discover
-        </div>
+        <section class="story-card" id="storyCard">
+          <div class="story-top">
+            <div>
+              <div class="card-label">DHAKA STORIES</div>
+              <div class="progress" id="storyProgress">0 / 5</div>
+            </div>
+            <button id="minStory" type="button">—</button>
+          </div>
+          <h2 id="storyTitle">A city of stories</h2>
+          <p id="storyText">Click a landmark in the city to discover a short story about Dhaka.</p>
+          <div class="story-divider"></div>
+          <button class="story-link" id="nextStory" type="button">
+            <span>↗</span>
+            <span id="nextStoryLabel">Start with Shaheed Minar</span>
+          </button>
+        </section>
+      </aside>
+
+      <div class="landmark-pop" id="landmarkPop" hidden>
+        <div class="pop-kicker" id="popArea">DHAKA</div>
+        <h3 id="popTitle">Landmark</h3>
+        <p id="popText"></p>
+        <button id="popClose" type="button">Close</button>
+      </div>
+
+      <div class="movement-hint">
+        <b>DRAG</b> to look around
+        <span></span>
+        <b>SCROLL</b> to zoom
+        <span></span>
+        <b>CLICK</b> a landmark
+      </div>
+
+      <div class="city-title">
+        <span>DHAKA, BANGLADESH</span>
+        <strong>Mini Dhaka</strong>
+        <small>A living miniature of the capital</small>
       </div>
     </section>
-
-    <section class="landmark-strip" aria-label="Quick landmark navigation">
-      <div class="strip-title">QUICK EXPLORE</div>
-      <div class="strip-scroll" id="stripScroll"></div>
-    </section>
-
-    <div class="about-panel" id="aboutPanel" hidden>
-      <button class="card-close" id="aboutClose" type="button" aria-label="Close">×</button>
-      <div class="card-kicker">ABOUT THE PROJECT</div>
-      <h2>Mini Dhaka</h2>
-      <p>
-        An original interactive web project that reimagines Dhaka as a playful miniature city.
-        This prototype is built with plain web technology and Three.js, hosted free on Cloudflare Pages.
-      </p>
-      <div class="about-tags">
-        <span>Three.js</span><span>GitHub</span><span>Cloudflare Pages</span><span>No terminal</span>
-      </div>
-    </div>
-
-    <div class="toast" id="toast" hidden></div>
   </main>
 
   <script type="module" src="./app.js"></script>
